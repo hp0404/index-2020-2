@@ -1,0 +1,10 @@
+# tmp & cache files
+**/.ipynb_checkpoints/
+**/__pycache__/
+
+# raw files
+v0.4/inputs/*.xlsx
+v0.4/inputs/*.xls
+v0.4/inputs/*.csv
+v0.4/inputs/*.json
+v0.4/inputs/*.zip
