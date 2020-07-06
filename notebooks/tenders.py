@@ -77,9 +77,11 @@ def db_connect(query: str, conn: str):
 
 def filter_table(df, d):
     
-    df["tenderEndDate"] = pd.to_datetime(df["tenderEndDate"]).dt.tz_convert(None)
+    df["tenderEndDate"] = pd.to_datetime(df["tenderEndDate"], utc=True).dt.tz_convert(None)
     df["Код області"] = df["organizationTaxId"].map(invert(d))
     df.insert(0, "Область", df["Код області"].map(REGIONS))
+#     df.to_excel(INPUTS_PATH / "P2" / "P02_007_raw.xlsx", index=False)
+    
     res = df.loc[df["Область"].notnull()].copy()
     res.rename(columns={"Область": "region"}, inplace=True)
     return res.drop("Код області", 1).sort_values(["tenderEndDate"])
@@ -98,8 +100,8 @@ def main():
         "organizationTaxId"
     FROM "Prozorro"."dbo_BizTenders"
     WHERE 
-        "tenderEndDate" <= '2020-06-30' AND 
-        "tenderEndDate" >= '2020-04-01';
+        "timeCreate" <= '2020-06-30' AND 
+        "timeCreate" >= '2020-04-01';
     """
     
     df = db_connect(q, CONNECTION)
