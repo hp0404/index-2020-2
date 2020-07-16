@@ -94,20 +94,24 @@ def main():
         "tenderId", 
         title, 
         status, 
+        "timeCreate", 
+        "dateModified",
         "procurementMethod", 
         "tenderEndDate",
         "tenderValue",
         "organizationTaxId"
     FROM "Prozorro"."dbo_BizTenders"
     WHERE 
-        "timeCreate" <= '2020-06-30' AND 
-        "timeCreate" >= '2020-04-01';
-    """
-    
+        "dateModified" ~ '2020'
+     """
+ 
+    #"timeCreate" <= '2020-06-30' AND 
+    #"timeCreate" >= '2020-04-01';
+
     df = db_connect(q, CONNECTION)
     d = select_edrpou()
     result = filter_table(df, d)
-    result.to_excel(INPUTS_PATH / "P2" / "P02_007.xlsx", index=False)
+    result.to_excel(INPUTS_PATH / "P2" / "P02_007_dateModified.xlsx", index=False)
     
     
 if __name__ == "__main__":
