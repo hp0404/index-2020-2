@@ -87,6 +87,48 @@ def filter_table(df, d):
     return res.drop("Код області", 1).sort_values(["tenderEndDate"])
 
 
+def make_dataset():
+    """Використовує коди ЄДРПОУ з OpenBudget. """
+   
+    tenders_query = """
+    SELECT 
+        "tenderId", 
+        title, 
+        status, 
+        "procurementMethod", 
+        "tenderEndDate",
+        "tenderValue",
+        "organizationTaxId"
+    FROM "Prozorro"."dbo_BizTenders"
+    WHERE 
+        "timeCreate" <= '2020-06-30' AND 
+        "timeCreate" >= '2020-04-01';
+    """
+    
+    edrpous_query = """
+    SELECT
+       A."BudgetCode",
+       A."EDRPOU",
+       B."ShortRegionName" 
+    FROM
+       "Budget"."Dim_Disposers" A 
+       LEFT JOIN
+          "General"."Dim_Regions" B 
+          ON A."RegionID" = B."RegionCode"
+    WHERE RIGHT (A."BudgetCode", 8) = '00000000'
+    """
+    
+    tenders = db_connect(tenders_query, CONNECTION)
+    edrpous = db_connect(edrpous_query, CONNECTION)
+    
+    mapping = edrpous.set_index("EDRPOU")["ShortRegionName"].to_dict()
+    tenders["region"] = tenders["organizationTaxId"].map(mapping)
+    tenders["tenderEndDate"] = pd.to_datetime(tenders["tenderEndDate"], utc=True).dt.tz_convert(None)
+    
+    result = tenders.loc[tenders["region"].notnull()]
+    result.to_excel(INPUTS_PATH / "P2" / "P02_007_disposers_timecreate.xlsx", index=False)
+
+
 def main():
     
     q = """
@@ -115,4 +157,4 @@ def main():
     
     
 if __name__ == "__main__":
-    main()
+    make_dataset()
