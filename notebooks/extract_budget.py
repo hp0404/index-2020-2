@@ -80,8 +80,8 @@ def generate_income_query(year):
                           '23000000000',
                           '24000000000',
                           '25000000000')
-          AND "DATE" >= '{year}-01-01'
-          AND "DATE" <= '{year}-03-01';"""
+          AND "DATE" >= '{year}-04-01'
+          AND "DATE" <= '{year}-06-30';"""
     
     return query
 
@@ -153,8 +153,8 @@ def main():
                       '24000000000',
                       '25000000000')
       AND "ECON" ~ '^3'
-      AND "DATE" >= '2020-01-01'
-      AND "DATE" <= '2020-03-01'
+      AND "DATE" >= '2020-04-01'
+      AND "DATE" <= '2020-06-01'
     GROUP BY "ADMIN";"""
 
     df1 = db_connect(query_p2_4, CONNECTION)
