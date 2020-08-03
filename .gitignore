@@ -11,6 +11,8 @@ v0.5/inputs/**/*.zip
 v0.5/inputs/raw
 v0.5/inputs/P99
 
+# calculated index
+v0.5/outputs/
 
 # db
 psql_engine.txt
