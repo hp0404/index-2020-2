@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-INPUTS_PATH = "./../v0.5/inputs"
-OUTPUT_PATH = "./../v0.5/outputs"
+INPUTS_PATH = "./../../v0.5/inputs"
+OUTPUT_PATH = "./../../v0.5/outputs"
 
 population = pd.read_excel(
     f"{INPUTS_PATH}/P99/population_2019-10_clean.xls",
