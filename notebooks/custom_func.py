@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-INPUTS_PATH = "./../../v0.5/inputs"
-OUTPUT_PATH = "./../../v0.5/outputs"
+INPUTS_PATH = "./../v0.5/inputs"
+OUTPUT_PATH = "./../v0.5/outputs"
 
 population = pd.read_excel(
     f"{INPUTS_PATH}/P99/population_2019-10_clean.xls",
@@ -39,8 +39,8 @@ regions = {'region':
 # population = pd.read_excel(f"{INPUTS_PATH}/P99/population_kmu.xlsx", index_col=0)
 # dict_population = population.to_dict()["Населення"]
 
-#видалив відкриття df_KMU - неможливо перевідкрити таблицю без змін в межах одного notebook
-#df_KMU = pd.read_excel(f"{OUTPUT_PATH}/99_KMU/kmu.xlsx").rename(columns={"Область": "region"})
+# видалив відкриття df_KMU - неможливо перевідкрити таблицю без змін в межах одного notebook
+df_KMU = pd.read_excel(f"{INPUTS_PATH}/P99/KMU.xlsx")
 
 # # Визначення коефіцієнтів для функції нормалізації
 def get_normal_coeffs(min_bound=0,max_bound=1):
