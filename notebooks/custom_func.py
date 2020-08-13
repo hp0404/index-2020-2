@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-INPUTS_PATH = "./../v0.5/inputs"
-OUTPUT_PATH = "./../v0.5/outputs"
+INPUTS_PATH = "./../../v0.5/inputs"
+OUTPUT_PATH = "./../../v0.5/outputs"
 
 population = pd.read_excel(
     f"{INPUTS_PATH}/P99/population_2019-10_clean.xls",
@@ -64,8 +64,16 @@ def normalize_parameter(df, column_name, par_name, min_bound=True,max_bound=True
     
     slope, intercept = get_normal_coeffs(min_bound,max_bound)
     print(f'Коефіцієнти нормалізації: {slope, intercept}')
-    
+     
     df[par_name] = df[column_name].map(lambda x: slope*x+intercept)
+    
+    if df.loc[(df[par_name]>1)|(df[par_name]<0)].shape[0]>0:
+        print(f'Увага! За параметром {par_name} існують значення, що виходять за межі нормальних.\nМожливі причини:\n1) Неправильно задані параметри нормалізації\n2) Помилка у джерелі (наприклад, відносне значення>1 або >100%)')
+        print(df.loc[(df[par_name]>1)|(df[par_name]<0),['region',par_name]])
+        df.loc[df[par_name]>1,par_name] = 1
+        df.loc[df[par_name]<0,par_name] = 0
+        print('Значення примусово приведені до нормальних\nТим не менше, рекомендовано виправити помилку')
+        
     print(f'Параметр {par_name} нормалізовано і додано до таблиці\n')
     
 # # Середнє зважене для розрахунку параметрів верхнього рівня та індексу
